@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router'
 import SentenceCard from '../components/SentenceCard'
 import { sentences } from '../data/sentences'
 import { topics } from '../data/topics'
+import { useProgress } from '../hooks/useProgress'
 import type { Topic } from '../types/content'
 
 const buttonBase =
@@ -16,14 +17,26 @@ interface StudySessionProps {
 
 function StudySession({ topic }: StudySessionProps) {
   const navigate = useNavigate()
-  // Temporary position (Step 6). Persistent progress comes in Step 7.
-  const [index, setIndex] = useState(0)
+  const { progress, markSentenceStudied, setCurrentCard } = useProgress()
+  // Start from the saved position of this topic (0-based), or the first sentence
+  const [index, setIndex] = useState(progress.currentCardByTopic[topic.id] ?? 0)
 
   const topicSentences = sentences
     .filter((sentence) => sentence.topicId === topic.id)
     .sort((a, b) => a.order - b.order)
+  const currentSentence = topicSentences[index]
   const isFirst = index === 0
   const isLast = index === topicSentences.length - 1
+
+  // A sentence counts as studied as soon as it is displayed
+  useEffect(() => {
+    markSentenceStudied(currentSentence.id)
+  }, [currentSentence.id, markSentenceStudied])
+
+  function goToSentence(newIndex: number) {
+    setIndex(newIndex)
+    setCurrentCard(topic.id, newIndex)
+  }
 
   return (
     <>
@@ -32,14 +45,14 @@ function StudySession({ topic }: StudySessionProps) {
         {index + 1} / {topicSentences.length}
       </p>
 
-      <SentenceCard sentence={topicSentences[index]} />
+      <SentenceCard sentence={currentSentence} />
 
       <div className="mt-6 flex flex-wrap gap-3">
         <button
           type="button"
           className={secondaryButton}
           disabled={isFirst}
-          onClick={() => setIndex(index - 1)}
+          onClick={() => goToSentence(index - 1)}
         >
           Edellinen
         </button>
@@ -55,7 +68,7 @@ function StudySession({ topic }: StudySessionProps) {
           <button
             type="button"
             className={primaryButton}
-            onClick={() => setIndex(index + 1)}
+            onClick={() => goToSentence(index + 1)}
           >
             Seuraava
           </button>
