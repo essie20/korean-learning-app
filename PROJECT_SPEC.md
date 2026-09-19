@@ -216,7 +216,7 @@ IMPLEMENTATION PLAN
 3. [COMPLETED] Add the 10 topics and the final 50 Korean sentences as static data.
 4. [COMPLETED] Create the routing shell and basic pages: Home, Topics, Study, Topic Complete, and Progress.
 5. [COMPLETED] Build the basic navigation and shared UI components.
-6. Implement the Study view with image, Korean sentence, pronunciation support, Finnish translation, audio, Previous, Next, and Valmis.
+6. [COMPLETED] Implement the Study view with image, Korean sentence, pronunciation support, Finnish translation, audio, Previous, Next, and Valmis.
 7. Implement progress tracking and localStorage.
 8. Implement topic completion, repetition, completion counts, and reset confirmation.
 9. Add the final images, audio files, and pronunciation content.
