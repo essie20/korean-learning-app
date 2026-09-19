@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router'
+import { primaryButton, secondaryButton } from '../components/buttonStyles'
 import SentenceCard from '../components/SentenceCard'
 import { sentences } from '../data/sentences'
 import { topics } from '../data/topics'
 import { useProgress } from '../hooks/useProgress'
 import type { Topic } from '../types/content'
-
-const buttonBase =
-  'rounded-md px-5 py-3 text-lg font-semibold focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-not-allowed disabled:opacity-50'
-const primaryButton = `${buttonBase} bg-blue-700 text-white hover:bg-blue-800`
-const secondaryButton = `${buttonBase} border-2 border-slate-400 bg-white text-slate-900 hover:bg-slate-100`
 
 interface StudySessionProps {
   topic: Topic
@@ -17,7 +13,8 @@ interface StudySessionProps {
 
 function StudySession({ topic }: StudySessionProps) {
   const navigate = useNavigate()
-  const { progress, markSentenceStudied, setCurrentCard } = useProgress()
+  const { progress, markSentenceStudied, setCurrentCard, completeTopic } =
+    useProgress()
   // Start from the saved position of this topic (0-based), or the first sentence
   const [index, setIndex] = useState(progress.currentCardByTopic[topic.id] ?? 0)
 
@@ -28,14 +25,15 @@ function StudySession({ topic }: StudySessionProps) {
   const isFirst = index === 0
   const isLast = index === topicSentences.length - 1
 
-  // A sentence counts as studied as soon as it is displayed
+  // A displayed sentence counts as studied and is the topic's current card
   useEffect(() => {
     markSentenceStudied(currentSentence.id)
-  }, [currentSentence.id, markSentenceStudied])
+    setCurrentCard(topic.id, index)
+  }, [currentSentence.id, topic.id, index, markSentenceStudied, setCurrentCard])
 
-  function goToSentence(newIndex: number) {
-    setIndex(newIndex)
-    setCurrentCard(topic.id, newIndex)
+  function handleValmis() {
+    completeTopic(topic.id)
+    navigate(`/aiheet/${topic.id}/valmis`)
   }
 
   return (
@@ -52,7 +50,7 @@ function StudySession({ topic }: StudySessionProps) {
           type="button"
           className={secondaryButton}
           disabled={isFirst}
-          onClick={() => goToSentence(index - 1)}
+          onClick={() => setIndex(index - 1)}
         >
           Edellinen
         </button>
@@ -60,7 +58,7 @@ function StudySession({ topic }: StudySessionProps) {
           <button
             type="button"
             className={primaryButton}
-            onClick={() => navigate(`/aiheet/${topic.id}/valmis`)}
+            onClick={handleValmis}
           >
             Valmis
           </button>
@@ -68,7 +66,7 @@ function StudySession({ topic }: StudySessionProps) {
           <button
             type="button"
             className={primaryButton}
-            onClick={() => goToSentence(index + 1)}
+            onClick={() => setIndex(index + 1)}
           >
             Seuraava
           </button>

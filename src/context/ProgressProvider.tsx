@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { ProgressContext } from '../hooks/useProgress'
-import { loadProgress, saveProgress } from '../utils/progress'
+import {
+  createEmptyProgress,
+  loadProgress,
+  saveProgress,
+} from '../utils/progress'
 
 interface ProgressProviderProps {
   children: ReactNode
@@ -41,9 +45,43 @@ function ProgressProvider({ children }: ProgressProviderProps) {
     )
   }, [])
 
+  // Adds one completion and clears the saved card, which ends the current pass.
+  // Studied sentences are not touched, so coverage is never reduced.
+  const completeTopic = useCallback((topicId: string) => {
+    setProgress((current) => {
+      const currentCardByTopic = { ...current.currentCardByTopic }
+      delete currentCardByTopic[topicId]
+      return {
+        ...current,
+        currentCardByTopic,
+        completionCountByTopic: {
+          ...current.completionCountByTopic,
+          [topicId]: (current.completionCountByTopic[topicId] ?? 0) + 1,
+        },
+      }
+    })
+  }, [])
+
+  // Back to the empty state (the save effect stores the empty data)
+  const resetProgress = useCallback(() => {
+    setProgress(createEmptyProgress())
+  }, [])
+
   const value = useMemo(
-    () => ({ progress, markSentenceStudied, setCurrentCard }),
-    [progress, markSentenceStudied, setCurrentCard],
+    () => ({
+      progress,
+      markSentenceStudied,
+      setCurrentCard,
+      completeTopic,
+      resetProgress,
+    }),
+    [
+      progress,
+      markSentenceStudied,
+      setCurrentCard,
+      completeTopic,
+      resetProgress,
+    ],
   )
 
   return (

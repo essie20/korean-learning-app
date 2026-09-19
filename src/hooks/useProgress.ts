@@ -5,6 +5,10 @@ export interface ProgressContextValue {
   progress: ProgressData
   markSentenceStudied: (sentenceId: string) => void
   setCurrentCard: (topicId: string, index: number) => void
+  // Valmis: count one completion and end the current pass of the topic
+  completeTopic: (topicId: string) => void
+  // Delete all progress
+  resetProgress: () => void
 }
 
 export const ProgressContext = createContext<ProgressContextValue | null>(null)

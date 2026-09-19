@@ -103,6 +103,41 @@ function toSummary(studied: number, total: number): ProgressSummary {
   return { studied, total, percent }
 }
 
+// How many times the topic has been completed with Valmis
+export function getCompletionCount(
+  progress: ProgressData,
+  topicId: string,
+): number {
+  return progress.completionCountByTopic[topicId] ?? 0
+}
+
+export interface RepetitionProgress {
+  position: number
+  total: number
+  percent: number
+}
+
+// A topic is being repeated when it has been completed at least once AND has a
+// saved current card (the card is cleared when a pass is completed).
+// Progress is the position in the current pass, so coverage is never affected.
+// Returns null when the topic is not being repeated.
+export function getRepetitionProgress(
+  progress: ProgressData,
+  topicId: string,
+): RepetitionProgress | null {
+  const card = progress.currentCardByTopic[topicId]
+  if (getCompletionCount(progress, topicId) < 1 || card === undefined) {
+    return null
+  }
+  const total = sentenceCountByTopic.get(topicId) ?? 0
+  const position = card + 1
+  return {
+    position,
+    total,
+    percent: total === 0 ? 0 : Math.round((position / total) * 100),
+  }
+}
+
 // Unique sentences viewed at least once / all sentences
 export function getOverallProgress(progress: ProgressData): ProgressSummary {
   const studied = new Set(
