@@ -213,7 +213,7 @@ IMPLEMENTATION PLAN
 
 1. [COMPLETED] Project setup: React + TypeScript + Vite, latest stable Tailwind CSS, React Router, ESLint, and Prettier.
 2. [COMPLETED] Define the basic project folder structure and TypeScript types for topics, sentences, and progress data.
-3. Add the 10 topics and the final 50 Korean sentences as static data.
+3. [COMPLETED] Add the 10 topics and the final 50 Korean sentences as static data.
 4. Create the routing shell and basic pages: Home, Topics, Study, Topic Complete, and Progress.
 5. Build the basic navigation and shared UI components.
 6. Implement the Study view with image, Korean sentence, pronunciation support, Finnish translation, audio, Previous, Next, and Valmis.
