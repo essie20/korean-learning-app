@@ -1,9 +1,20 @@
+import { Navigate, Route, Routes } from 'react-router'
+import HomePage from './pages/HomePage'
+import ProgressPage from './pages/ProgressPage'
+import StudyPage from './pages/StudyPage'
+import TopicCompletePage from './pages/TopicCompletePage'
+import TopicsPage from './pages/TopicsPage'
+
 function App() {
   return (
-    <main className="mx-auto max-w-3xl p-6">
-      <h1 className="text-3xl font-bold text-slate-900">Korean Learning App</h1>
-      <p className="mt-2 text-slate-700">Project setup complete.</p>
-    </main>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/aiheet" element={<TopicsPage />} />
+      <Route path="/aiheet/:topicId/opiskelu" element={<StudyPage />} />
+      <Route path="/aiheet/:topicId/valmis" element={<TopicCompletePage />} />
+      <Route path="/edistyminen" element={<ProgressPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 
