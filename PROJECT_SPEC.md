@@ -219,8 +219,14 @@ IMPLEMENTATION PLAN
 6. [COMPLETED] Implement the Study view with image, Korean sentence, pronunciation support, Finnish translation, audio, Previous, Next, and Valmis.
 7. [COMPLETED] Implement progress tracking and localStorage.
 8. [COMPLETED] Implement topic completion, repetition, completion counts, and reset confirmation.
-9. Add the final images, audio files, and pronunciation content.
+9. [COMPLETED] Add the final images, audio files, and pronunciation content.
 10. Improve responsive design, keyboard navigation, focus visibility, contrast, alt text, text zoom, and reflow.
 11. Run functional, usability, accessibility, build, lint, and manual tests and fix issues.
 12. Deploy the finished application.
+    GitHub Pages deployment note (required for this step):
+    - BrowserRouter must use basename={import.meta.env.BASE_URL}.
+    - The production Vite base should be /korean-learning-app/.
+    - GitHub Pages needs an SPA fallback for direct nested URLs and refreshes, using the planned 404.html fallback approach.
+    - Deployment verification must include root navigation, nested routes, direct-route loading, refresh behavior, images and audio under the repository sub-path.
+    - Background: the Step 9 scratch verification with the router basename succeeded under /korean-learning-app/ (all 50 images and audio files loaded). The app currently works at the root path only, so this is a known deployment configuration requirement, not a Step 9 media problem.
 13. Evaluate the finished application against the predefined requirements and record the results for the thesis.
