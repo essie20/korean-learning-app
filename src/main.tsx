@@ -8,7 +8,7 @@ import ProgressProvider from './context/ProgressProvider.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ProgressProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <App />
       </BrowserRouter>
     </ProgressProvider>
