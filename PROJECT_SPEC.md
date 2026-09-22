@@ -222,7 +222,8 @@ IMPLEMENTATION PLAN
 9. [COMPLETED] Add the final images, audio files, and pronunciation content.
 10. [COMPLETED] Improve responsive design, keyboard navigation, focus visibility, contrast, alt text, text zoom, and reflow.
 11. [COMPLETED] Run functional, usability, accessibility, build, lint, and manual tests and fix issues.
-12. Deploy the finished application.
+12. [COMPLETED] Deploy the finished application.
+    Live site: https://essie20.github.io/korean-learning-app/
     GitHub Pages deployment note (required for this step):
     - BrowserRouter must use basename={import.meta.env.BASE_URL}.
     - The production Vite base should be /korean-learning-app/.
