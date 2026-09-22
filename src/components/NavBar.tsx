@@ -15,7 +15,8 @@ const inactiveClasses =
 function NavBar() {
   return (
     <nav aria-label="Päävalikko" className="border-b border-slate-200 bg-white">
-      <ul className="mx-auto flex max-w-3xl flex-wrap gap-x-2 px-3">
+      {/* pt-2 leaves room above the links so the focus ring is not cut off */}
+      <ul className="mx-auto flex max-w-3xl flex-wrap gap-x-2 px-3 pt-2">
         {links.map(({ to, label, end }) => (
           <li key={to}>
             <NavLink

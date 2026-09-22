@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { secondaryButton } from '../components/buttonStyles'
 import ConfirmDialog from '../components/ConfirmDialog'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useProgress } from '../hooks/useProgress'
 
 function ProgressPage() {
+  useDocumentTitle('Edistyminen')
   const { resetProgress } = useProgress()
   const [confirmOpen, setConfirmOpen] = useState(false)
 

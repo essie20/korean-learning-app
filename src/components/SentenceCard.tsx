@@ -20,7 +20,8 @@ function SentenceCard({ sentence }: SentenceCardProps) {
           className="mb-6 max-h-96 w-full rounded object-contain"
         />
       )}
-      <p lang="ko" className="text-3xl font-bold text-slate-900">
+      {/* break-keep: line breaks only between words, not inside a Korean word */}
+      <p lang="ko" className="text-3xl font-bold break-keep text-slate-900">
         {korean}
       </p>
       {pronunciation && (

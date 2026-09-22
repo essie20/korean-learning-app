@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router'
 import { primaryButton, secondaryButton } from '../components/buttonStyles'
 import SentenceCard from '../components/SentenceCard'
 import { sentences } from '../data/sentences'
 import { topics } from '../data/topics'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useProgress } from '../hooks/useProgress'
 import type { Topic } from '../types/content'
 
@@ -12,7 +13,9 @@ interface StudySessionProps {
 }
 
 function StudySession({ topic }: StudySessionProps) {
+  useDocumentTitle(`Opiskelu: ${topic.title}`)
   const navigate = useNavigate()
+  const nextButtonRef = useRef<HTMLButtonElement>(null)
   const { progress, markSentenceStudied, setCurrentCard, completeTopic } =
     useProgress()
   // Start from the saved position of this topic (0-based), or the first sentence
@@ -30,6 +33,15 @@ function StudySession({ topic }: StudySessionProps) {
     markSentenceStudied(currentSentence.id)
     setCurrentCard(topic.id, index)
   }, [currentSentence.id, topic.id, index, markSentenceStudied, setCurrentCard])
+
+  function handlePrevious() {
+    setIndex(index - 1)
+    // Edellinen becomes disabled on the first sentence. Move focus to the
+    // next button first so keyboard focus is not lost.
+    if (index - 1 === 0) {
+      nextButtonRef.current?.focus()
+    }
+  }
 
   function handleValmis() {
     completeTopic(topic.id)
@@ -50,12 +62,13 @@ function StudySession({ topic }: StudySessionProps) {
           type="button"
           className={secondaryButton}
           disabled={isFirst}
-          onClick={() => setIndex(index - 1)}
+          onClick={handlePrevious}
         >
           Edellinen
         </button>
         {isLast ? (
           <button
+            ref={nextButtonRef}
             type="button"
             className={primaryButton}
             onClick={handleValmis}
@@ -64,6 +77,7 @@ function StudySession({ topic }: StudySessionProps) {
           </button>
         ) : (
           <button
+            ref={nextButtonRef}
             type="button"
             className={primaryButton}
             onClick={() => setIndex(index + 1)}

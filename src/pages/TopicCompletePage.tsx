@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router'
 import { primaryButton, secondaryButton } from '../components/buttonStyles'
 import { topics } from '../data/topics'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useProgress } from '../hooks/useProgress'
 import { getCompletionCount, getTopicProgress } from '../utils/progress'
 
@@ -8,6 +9,9 @@ function TopicCompletePage() {
   const { topicId } = useParams()
   const { progress, setCurrentCard } = useProgress()
   const topic = topics.find((t) => t.id === topicId)
+  useDocumentTitle(
+    topic ? `Aihe suoritettu: ${topic.title}` : 'Aihe suoritettu',
+  )
 
   if (!topic) {
     return <Navigate to="/aiheet" replace />
