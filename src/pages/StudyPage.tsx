@@ -49,44 +49,40 @@ function StudySession({ topic }: StudySessionProps) {
   }
 
   return (
-    <>
-      <h1 className="text-3xl font-bold text-slate-900">{topic.title}</h1>
-      <p aria-live="polite" className="mt-2 mb-6 text-lg text-slate-700">
-        {index + 1} / {topicSentences.length}
-      </p>
-
-      <SentenceCard sentence={currentSentence} />
-
-      <div className="mt-6 flex flex-wrap gap-3">
+    <SentenceCard
+      sentence={currentSentence}
+      topicTitle={topic.title}
+      position={index + 1}
+      total={topicSentences.length}
+    >
+      <button
+        type="button"
+        className={secondaryButton}
+        disabled={isFirst}
+        onClick={handlePrevious}
+      >
+        Edellinen
+      </button>
+      {isLast ? (
         <button
+          ref={nextButtonRef}
           type="button"
-          className={secondaryButton}
-          disabled={isFirst}
-          onClick={handlePrevious}
+          className={primaryButton}
+          onClick={handleValmis}
         >
-          Edellinen
+          Valmis
         </button>
-        {isLast ? (
-          <button
-            ref={nextButtonRef}
-            type="button"
-            className={primaryButton}
-            onClick={handleValmis}
-          >
-            Valmis
-          </button>
-        ) : (
-          <button
-            ref={nextButtonRef}
-            type="button"
-            className={primaryButton}
-            onClick={() => setIndex(index + 1)}
-          >
-            Seuraava
-          </button>
-        )}
-      </div>
-    </>
+      ) : (
+        <button
+          ref={nextButtonRef}
+          type="button"
+          className={primaryButton}
+          onClick={() => setIndex(index + 1)}
+        >
+          Seuraava
+        </button>
+      )}
+    </SentenceCard>
   )
 }
 

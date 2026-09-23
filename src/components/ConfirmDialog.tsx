@@ -49,7 +49,7 @@ function ConfirmDialog({
         event.preventDefault()
         onCancel()
       }}
-      className="m-auto w-[calc(100%-1rem)] max-w-md rounded-lg border border-slate-300 bg-white p-4 text-slate-900 backdrop:bg-black/50 sm:p-6"
+      className="m-auto w-[calc(100%-1rem)] max-w-md rounded-[2rem] border border-white/60 bg-white/95 p-4 text-slate-900 shadow-2xl shadow-indigo-950/10 backdrop-blur backdrop:bg-slate-900/50 sm:p-8"
     >
       <h2 id={titleId} className="text-xl font-bold">
         {title}
