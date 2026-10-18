@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import type { KeyboardEvent } from 'react'
 import { getPronunciationNotes } from '../data/pronunciationGuide'
 
 interface PronunciationPopoverProps {
@@ -8,43 +9,36 @@ interface PronunciationPopoverProps {
 // A small contextual "speech bubble" that explains only the special
 // Finnish-oriented pronunciation notation actually used in the CURRENT
 // sentence (see src/data/pronunciationGuide.ts for the approved source and
-// detection rules). Opens and closes in place next to the pronunciation
-// text - never a separate page/route.
+// detection rules). Works as a disclosure: the panel opens inline in the
+// page flow below the button and pushes the content below it down, so it
+// never covers the audio or Previous/Next controls - never a separate
+// page/route. It is closed with its own button, the trigger or Escape
+// (not by clicking elsewhere, which would shift the layout mid-click).
 function PronunciationPopover({ pronunciation }: PronunciationPopoverProps) {
   const [open, setOpen] = useState(false)
   const popoverId = useId()
   const triggerRef = useRef<HTMLButtonElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
 
   const notes = getPronunciationNotes(pronunciation)
 
   useEffect(() => {
-    if (!open) return
-    closeRef.current?.focus()
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        event.preventDefault()
-        setOpen(false)
-        triggerRef.current?.focus()
-      }
-    }
-    function handlePointerDown(event: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('mousedown', handlePointerDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('mousedown', handlePointerDown)
-    }
+    if (open) closeRef.current?.focus()
   }, [open])
+
+  function close() {
+    setOpen(false)
+    triggerRef.current?.focus()
+  }
+
+  // Escape only applies while focus is inside this component, so it never
+  // pulls focus back here from elsewhere on the page.
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (open && event.key === 'Escape') {
+      event.preventDefault()
+      close()
+    }
+  }
 
   // Sentence changes (Previous/Next) should always close a stale popover
   // rather than leave outdated notes open for the new sentence.
@@ -53,11 +47,10 @@ function PronunciationPopover({ pronunciation }: PronunciationPopoverProps) {
   }, [pronunciation])
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-xs">
+    <div className="relative w-full max-w-xs" onKeyDown={handleKeyDown}>
       <button
         ref={triggerRef}
         type="button"
-        aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={popoverId}
         aria-label="Näytä ääntämysohje tälle lauseelle"
@@ -84,9 +77,9 @@ function PronunciationPopover({ pronunciation }: PronunciationPopoverProps) {
       {open && (
         <div
           id={popoverId}
-          role="dialog"
+          role="region"
           aria-label="Ääntämysohje"
-          className="absolute top-full left-0 z-20 mt-3 w-full rounded-2xl border border-white/70 bg-white p-4 text-left text-sm text-slate-700 shadow-2xl shadow-indigo-950/15"
+          className="relative mt-3 w-full rounded-2xl border border-white/70 bg-white p-4 text-left text-sm text-slate-700 shadow-2xl shadow-indigo-950/15"
         >
           {/* speech-bubble tail */}
           <span
@@ -100,10 +93,7 @@ function PronunciationPopover({ pronunciation }: PronunciationPopoverProps) {
               ref={closeRef}
               type="button"
               aria-label="Sulje ääntämysohje"
-              onClick={() => {
-                setOpen(false)
-                triggerRef.current?.focus()
-              }}
+              onClick={close}
               className="-mt-1 -mr-1 shrink-0 rounded-full p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
             >
               <svg
