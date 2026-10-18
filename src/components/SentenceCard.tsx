@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import AudioButton from './AudioButton'
 import Mascot from './Mascot'
 import ProgressBar from './ProgressBar'
+import PronunciationPopover from './PronunciationPopover'
 import type { Sentence } from '../types/content'
 
 interface SentenceCardProps {
@@ -79,11 +80,14 @@ function SentenceCard({
           </p>
 
           {pronunciation && (
-            <p className="inline-flex w-fit items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-base text-slate-600">
-              <span className="font-semibold text-slate-500">Ääntämys</span>
-              <span className="text-slate-400">·</span>
-              {pronunciation}
-            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="inline-flex w-fit items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-base text-slate-600">
+                <span className="shrink-0 whitespace-nowrap font-semibold text-slate-500">Ääntämys</span>
+                <span className="text-slate-400">·</span>
+                {pronunciation}
+              </p>
+              <PronunciationPopover pronunciation={pronunciation} />
+            </div>
           )}
 
           <p className="rounded-2xl bg-gradient-to-r from-indigo-50 to-blue-50 px-4 py-3 text-xl font-medium text-slate-900">
