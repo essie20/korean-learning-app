@@ -38,7 +38,7 @@ function TopicsPage() {
             className="hidden shrink-0 sm:block"
           />
           <div>
-            <p className="text-sm font-semibold tracking-wide text-blue-700 uppercase">
+            <p className="text-sm font-semibold tracking-wide text-blue-800 uppercase">
               선택하세요 · Valitse aihe
             </p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900 lg:text-4xl">

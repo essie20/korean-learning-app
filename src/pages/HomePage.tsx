@@ -64,10 +64,11 @@ function HomePage() {
           style={{ backgroundImage: `url('${baseUrl}${HERO_IMAGE}')` }}
         />
         {/* Legibility wash so the left-side text stays readable over any
-            part of the scene, however busy. */}
+            part of the scene, however busy. Below lg the text spans the
+            full width, so the wash stays strong all the way across. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/45 to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/45 to-transparent max-lg:via-white/80 max-lg:to-white/65"
         />
         <div className="relative grid grid-cols-1 gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-center">
           <div className="flex flex-col items-start gap-5">
@@ -80,7 +81,7 @@ function HomePage() {
             <h1 className="text-5xl leading-[1.05] font-bold text-balance text-slate-900 lg:text-6xl">
               Opi koreaa
               <br />
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-800 to-indigo-800 bg-clip-text text-transparent">
                 arkilauseilla
               </span>
             </h1>
@@ -110,7 +111,7 @@ function HomePage() {
                 <span className="text-4xl font-bold text-slate-900">
                   {percent}%
                 </span>
-                <span className="text-xs font-medium text-slate-500">
+                <span className="text-xs font-medium text-slate-600">
                   valmiina
                 </span>
               </div>
@@ -173,7 +174,7 @@ function HomePage() {
             </div>
           ))}
         </dl>
-        <p className="mt-8 text-center text-xs font-medium text-slate-400">
+        <p className="mt-8 text-center text-xs font-medium text-slate-600">
           {topics.length} aihetta · {sentences.length} lausetta
         </p>
       </div>

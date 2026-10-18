@@ -68,7 +68,7 @@ function TopicCard({ topic, progress }: TopicCardProps) {
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-slate-400">
+        <p className="text-xs font-semibold text-slate-600">
           Aihe {String(topic.order).padStart(2, '0')}
         </p>
         <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-700">
