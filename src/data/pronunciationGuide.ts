@@ -4,13 +4,13 @@ export interface PronunciationNote {
   text: string
 }
 
-// The approved Finnish-oriented pronunciation notation guide, sourced from
-// "Korean_50_Sentences_Finnish_Oriented_Pronunciation_Final.pdf" (the
-// authoritative version - not the earlier V1 working notes). Only the
-// symbols/combinations that actually appear in this app's pronunciation
-// strings are covered here. Do not add, remove or reword entries without
-// the approved source - Korean audio remains the primary pronunciation
-// reference; this text only explains the written notation.
+// Finnish translations of the notation legend in the approved source,
+// "Korean_50_Sentences_Finnish_Oriented_Pronunciation_Final.pdf". The
+// legend explains exactly five symbols - ŏ, ŭ, dj, tš and w - so only
+// those have notes here. Other spellings in the pronunciation strings
+// (j, ddj, doubled consonants, etc.) are not explained by the source and
+// must not get notes. Do not add, remove or reword entries without the
+// approved source.
 const NOTES = {
   eo: {
     id: 'eo',
@@ -20,7 +20,7 @@ const NOTES = {
   eu: {
     id: 'eu',
     label: 'ŭ',
-    text: 'Suomen kielessä ei ole täysin vastaavaa äännettä. Se muistuttaa u-äännettä, mutta huulet eivät pyöristy samalla tavalla.',
+    text: 'ŭ vastaa korean ㅡ-vokaalia. Se on keskivokaali, joka äännetään huulia pyöristämättä.',
   },
   dj: {
     id: 'dj',
@@ -37,53 +37,30 @@ const NOTES = {
     label: 'w',
     text: 'w ääntyy englannin w:n kaltaisena liukuäänteenä, ei suomen v:nä.',
   },
-  j: {
-    id: 'j',
-    label: 'j',
-    text: 'j luetaan kuten suomen j.',
-  },
-  tense: {
-    id: 'tense',
-    label: 'kk / tt / pp / ss / ddj',
-    text: 'Kaksoiskonsonantti ilmaisee tässä oppaassa korean jännitteistä konsonanttia, ei pelkästään pitkää suomen konsonanttia.',
-  },
 } as const satisfies Record<string, PronunciationNote>
 
-// Detects which of the approved notation entries actually occur in one
-// sentence's pronunciation string, so the popover only ever shows notes
-// relevant to the current sentence. "ddj" is the final-app notation for
-// the tense Korean j-type sound, so it is grouped into the shared
-// tense/doubled-consonant note rather than reported as an unrelated "dj".
-// A bare "j" is only reported once any "dj"/"ddj" occurrences have been
-// removed, so it is never duplicated with the dj/tš entries. Ordinary
-// letter combinations that are not part of this approved list (hw, gw,
-// dw, nj, plain hyphen separators, etc.) are intentionally never reported.
+// Finnish translation of the source's caveat (legend and closing note):
+// the spellings are an approximate reading aid, not official
+// romanization, and the Korean audio is the primary reference. Shown with
+// every sentence's notes, including when a sentence has none.
+export const PRONUNCIATION_CAVEAT =
+  'Merkinnät ovat likimääräinen lukemisen apu, eivät virallinen latinisointi. Tarkista ääntämys korealaisesta äänitteestä, joka on ensisijainen ääntämisen malli.'
+
+// Detects which of the legend's symbols actually occur in one sentence's
+// pronunciation string, so the popover only ever shows notes relevant to
+// the current sentence. "ddj" is a different spelling from "dj" and the
+// source does not explain it, so it is removed before looking for "dj";
+// otherwise it would wrongly trigger the dj note.
 export function getPronunciationNotes(
   pronunciation: string,
 ): PronunciationNote[] {
-  let bareScan = pronunciation
-  const hasDdj = bareScan.includes('ddj')
-  if (hasDdj) bareScan = bareScan.split('ddj').join('')
-
-  const hasDj = bareScan.includes('dj')
-  if (hasDj) bareScan = bareScan.split('dj').join('')
-
-  const hasTs = pronunciation.includes('tš')
-  const hasEo = pronunciation.includes('ŏ')
-  const hasEu = pronunciation.includes('ŭ')
-  const hasW = pronunciation.includes('w')
-  const hasTense =
-    hasDdj ||
-    ['kk', 'tt', 'pp', 'ss'].some((seq) => pronunciation.includes(seq))
-  const hasJ = bareScan.includes('j')
+  const withoutDdj = pronunciation.split('ddj').join('')
 
   const notes: PronunciationNote[] = []
-  if (hasEo) notes.push(NOTES.eo)
-  if (hasEu) notes.push(NOTES.eu)
-  if (hasDj) notes.push(NOTES.dj)
-  if (hasTs) notes.push(NOTES.ts)
-  if (hasW) notes.push(NOTES.w)
-  if (hasJ) notes.push(NOTES.j)
-  if (hasTense) notes.push(NOTES.tense)
+  if (pronunciation.includes('ŏ')) notes.push(NOTES.eo)
+  if (pronunciation.includes('ŭ')) notes.push(NOTES.eu)
+  if (withoutDdj.includes('dj')) notes.push(NOTES.dj)
+  if (pronunciation.includes('tš')) notes.push(NOTES.ts)
+  if (pronunciation.includes('w')) notes.push(NOTES.w)
   return notes
 }

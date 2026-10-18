@@ -1,6 +1,9 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
-import { getPronunciationNotes } from '../data/pronunciationGuide'
+import {
+  getPronunciationNotes,
+  PRONUNCIATION_CAVEAT,
+} from '../data/pronunciationGuide'
 
 interface PronunciationPopoverProps {
   pronunciation: string
@@ -8,8 +11,9 @@ interface PronunciationPopoverProps {
 
 // A small contextual "speech bubble" that explains only the special
 // Finnish-oriented pronunciation notation actually used in the CURRENT
-// sentence (see src/data/pronunciationGuide.ts for the approved source and
-// detection rules). Works as a disclosure: the panel opens inline in the
+// sentence, followed by the source's caveat that the notation is only
+// approximate (see src/data/pronunciationGuide.ts for the approved source
+// and detection rules). Works as a disclosure: the panel opens inline in the
 // page flow below the button and pushes the content below it down, so it
 // never covers the audio or Previous/Next controls - never a separate
 // page/route. It is closed with its own button, the trigger or Escape
@@ -127,6 +131,10 @@ function PronunciationPopover({ pronunciation }: PronunciationPopoverProps) {
               Tälle lauseelle ei ole erillisiä ääntämyshuomioita.
             </p>
           )}
+
+          <p className="relative mt-3 border-t border-slate-100 pt-3 text-xs text-slate-500">
+            {PRONUNCIATION_CAVEAT}
+          </p>
         </div>
       )}
     </div>
