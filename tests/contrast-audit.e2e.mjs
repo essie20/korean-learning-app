@@ -24,7 +24,8 @@
 //
 // Usage (dev server running):  node tests/contrast-audit.e2e.mjs
 // Options: APP_URL, BROWSER_PATH, RESULTS_FILE (markdown), DATA_FILE (JSON),
-//   FILTER_STATES (comma-separated state labels, e.g. "Topics (with progress)")
+//   FILTER_STATES (state labels separated by commas, or by semicolons when a
+//   label itself contains a comma, e.g. "Topics (with progress)")
 //   and FILTER_NAME (regular expression on the element name) to re-measure
 //   selected elements only.
 // Needs Node 22+. No npm dependencies.
@@ -46,7 +47,9 @@ const RESULTS_FILE =
 const DATA_FILE = process.env.DATA_FILE ?? 'docs/contrast-focus-audit-data.json'
 const STORAGE_KEY = 'korean-learning-app-progress'
 const STATE_FILTER = process.env.FILTER_STATES
-  ? process.env.FILTER_STATES.split(',').map((x) => x.trim())
+  ? process.env.FILTER_STATES.split(
+      process.env.FILTER_STATES.includes(';') ? ';' : ',',
+    ).map((x) => x.trim())
   : null
 const NAME_FILTER = process.env.FILTER_NAME
   ? new RegExp(process.env.FILTER_NAME)
