@@ -27,7 +27,11 @@
 //   FILTER_STATES (state labels separated by commas, or by semicolons when a
 //   label itself contains a comma, e.g. "Topics (with progress)")
 //   and FILTER_NAME (regular expression on the element name) to re-measure
-//   selected elements only.
+//   selected elements only. For a single label that contains a comma, end it
+//   with a semicolon ("Study 1/5, help closed;"). A run fails without writing
+//   results if no or an unknown state is requested, or if nothing was measured.
+//   CHECK_FILTERS_ONLY=1 validates the filters, prints the selected states
+//   and exits without measuring.
 // Needs Node 22+. No npm dependencies.
 
 import { execSync, spawn } from 'node:child_process'
@@ -49,7 +53,9 @@ const STORAGE_KEY = 'korean-learning-app-progress'
 const STATE_FILTER = process.env.FILTER_STATES
   ? process.env.FILTER_STATES.split(
       process.env.FILTER_STATES.includes(';') ? ';' : ',',
-    ).map((x) => x.trim())
+    )
+      .map((x) => x.trim())
+      .filter(Boolean)
   : null
 const NAME_FILTER = process.env.FILTER_NAME
   ? new RegExp(process.env.FILTER_NAME)
@@ -672,6 +678,49 @@ const STATES = [
   },
 ]
 
+const stateLabel = (state) =>
+  `${state.name}${state.withProgress ? ' (with progress)' : ''}`
+const KNOWN_STATES = STATES.map(stateLabel)
+async function stopBrowser() {
+  ws.close()
+  browser.kill()
+  await sleep(500)
+  try {
+    rmSync(profile, { recursive: true, force: true })
+  } catch {
+    /* may still be locked briefly */
+  }
+}
+// Guard: every requested state must be one of the known states. A typo or a
+// label split at its own comma would otherwise be skipped silently.
+const unknownStates = STATE_FILTER
+  ? STATE_FILTER.filter((label) => !KNOWN_STATES.includes(label))
+  : []
+if (STATE_FILTER && STATE_FILTER.length === 0) {
+  console.error(
+    'FILTER_STATES is set but names no state. Nothing was measured and no results were written.',
+  )
+  await stopBrowser()
+  process.exit(2)
+}
+if (unknownStates.length) {
+  console.error(
+    `FILTER_STATES contains unknown state(s): ${unknownStates.map((x) => JSON.stringify(x)).join(', ')}\n` +
+      'Separate labels with commas, or with semicolons when a label contains a comma.\n' +
+      `Known states: ${KNOWN_STATES.map((x) => JSON.stringify(x)).join(', ')}\n` +
+      'Nothing was measured and no results were written.',
+  )
+  await stopBrowser()
+  process.exit(2)
+}
+if (process.env.CHECK_FILTERS_ONLY) {
+  console.log(
+    `Filters valid. States selected: ${(STATE_FILTER ?? KNOWN_STATES).map((x) => JSON.stringify(x)).join(', ')}; elements: ${NAME_FILTER ?? 'all'}`,
+  )
+  await stopBrowser()
+  process.exit(0)
+}
+
 let crash = null
 try {
   await send('Emulation.setFocusEmulationEnabled', { enabled: true })
@@ -683,13 +732,7 @@ try {
       mobile: vp.mobile,
     })
     for (const state of STATES) {
-      if (
-        STATE_FILTER &&
-        !STATE_FILTER.includes(
-          `${state.name}${state.withProgress ? ' (with progress)' : ''}`,
-        )
-      )
-        continue
+      if (STATE_FILTER && !STATE_FILTER.includes(stateLabel(state))) continue
       await go('')
       await ev(
         state.withProgress
@@ -716,13 +759,15 @@ try {
 } catch (e) {
   crash = e.message
 }
-ws.close()
-browser.kill()
-await sleep(500)
-try {
-  rmSync(profile, { recursive: true, force: true })
-} catch {
-  /* may still be locked briefly */
+await stopBrowser()
+
+// Guard: a run that measured nothing must not look like a pass
+if (!crash && !records.some((r) => r.n)) {
+  console.error(
+    `The run produced zero measurements (states: ${STATE_FILTER ? STATE_FILTER.join('; ') : 'all'}; elements: ${NAME_FILTER ?? 'all'}).\n` +
+      'Check FILTER_NAME and FILTER_STATES. No results were written.',
+  )
+  process.exit(1)
 }
 
 // ------------------------------------------------------------------ report
