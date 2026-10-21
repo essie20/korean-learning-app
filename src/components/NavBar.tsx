@@ -29,7 +29,7 @@ function NavBar() {
             <span className="text-lg font-bold tracking-tight text-slate-900">
               Koreaa lauseilla
             </span>
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-slate-600">
               Pieniä lauseita, suuria hetkiä
             </span>
           </span>

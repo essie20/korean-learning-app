@@ -64,19 +64,19 @@ function ProgressPage() {
           </div>
         </div>
         <div className="text-center sm:text-left">
-          <p className="text-sm text-slate-500">Kokonaisedistyminen</p>
+          <p className="text-sm text-slate-600">Kokonaisedistyminen</p>
           <p className="text-2xl font-bold text-slate-900">
             {overall.studied} / {overall.total} lausetta
           </p>
         </div>
         <div className="text-center sm:text-left">
-          <p className="text-sm text-slate-500">Suoritetut aiheet</p>
+          <p className="text-sm text-slate-600">Suoritetut aiheet</p>
           <p className="text-2xl font-bold text-slate-900">
             {completedTopics} / {topics.length}
           </p>
         </div>
         <div className="text-center sm:text-left">
-          <p className="text-sm text-slate-500">Suoritukset yhteensä</p>
+          <p className="text-sm text-slate-600">Suoritukset yhteensä</p>
           <p className="text-2xl font-bold text-slate-900">
             {totalCompletions}
           </p>

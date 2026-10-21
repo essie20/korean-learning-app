@@ -83,7 +83,7 @@ function SentenceCard({
             <div className="flex flex-wrap items-center gap-2">
               <p className="inline-flex w-fit items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-base text-slate-600">
                 <span className="shrink-0 whitespace-nowrap font-semibold text-slate-500">Ääntämys</span>
-                <span className="text-slate-400">·</span>
+                <span className="text-slate-600">·</span>
                 {pronunciation}
               </p>
               <PronunciationPopover pronunciation={pronunciation} />

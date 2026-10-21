@@ -98,7 +98,7 @@ function PronunciationPopover({ pronunciation }: PronunciationPopoverProps) {
               type="button"
               aria-label="Sulje ääntämysohje"
               onClick={close}
-              className="-mt-1 -mr-1 shrink-0 rounded-full p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+              className="-mt-1 -mr-1 shrink-0 rounded-full p-1.5 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
             >
               <svg
                 aria-hidden="true"
