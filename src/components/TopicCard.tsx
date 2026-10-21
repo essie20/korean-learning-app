@@ -92,7 +92,7 @@ function TopicCard({ topic, progress }: TopicCardProps) {
       />
 
       {isCompleted && (
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-slate-600">
           Suoritettu {completionCount}{' '}
           {completionCount === 1 ? 'kerran' : 'kertaa'}
           {repetition &&
