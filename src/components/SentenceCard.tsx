@@ -56,7 +56,7 @@ function SentenceCard({
 
         <div className="flex flex-col gap-5 lg:justify-center">
           <div>
-            <h1 className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-3.5 py-1 text-sm font-semibold tracking-wide text-white uppercase shadow-sm">
+            <h1 className="inline-block rounded-lg bg-violet-100 px-3 py-1 text-base font-medium text-slate-700 lg:text-lg">
               {topicTitle}
             </h1>
             <div className="mt-3 flex items-center gap-3">

@@ -151,7 +151,7 @@ function HomePage() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="flex flex-col items-center gap-3 rounded-3xl border border-white/70 bg-white/80 p-6 text-center shadow-md shadow-indigo-950/5 transition-transform hover:-translate-y-1"
+              className="flex flex-col items-center gap-3 rounded-3xl border border-white/70 bg-white/80 p-6 text-center shadow-md shadow-indigo-950/5"
             >
               <span
                 className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${f.tint} text-white shadow-md`}
