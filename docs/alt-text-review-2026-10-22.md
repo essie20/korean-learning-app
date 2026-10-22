@@ -9,6 +9,7 @@ Record of an author content review and the alt-text corrections that followed. I
 3. **Alt-text comparison.** A subsequent ChatGPT-assisted comparison of screenshots of all 50 images against their alt texts identified five descriptions for correction.
 4. **Corrections.** Claude applied those five corrections to `src/data/sentences.ts`. ChatGPT then checked the updated wording against the earlier screenshots.
 5. **Not yet confirmed.** The author has not yet explicitly confirmed a post-fix visual review of the corrected descriptions.
+6. **Approval (added 22 October 2026, after PR #6 was opened).** The author approved the five alt-text corrections for application. This is approval of the changes, not confirmation that she personally repeated the post-fix visual review, so point 5 still applies.
 
 This was **not** participant testing, independent expert validation or screen-reader testing. It does not establish overall accessibility or WCAG conformance.
 
@@ -34,4 +35,4 @@ The other 45 alt texts are unchanged.
 
 ## Effect on the audit
 
-The "Alt text for images" row in `docs/app-gap-audit.md` is unchanged by this record. Whether the descriptions fit their images rests on the author review and the AI-assisted comparison described above, and the author has not yet confirmed a post-fix visual review.
+The "Alt text for images" row in `docs/app-gap-audit.md` is unchanged by this record. Whether the descriptions fit their images rests on the author review and the AI-assisted comparison described above. The author approved the corrections for application but has not confirmed that she personally repeated a post-fix visual review.
