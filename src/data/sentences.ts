@@ -20,7 +20,7 @@ export const sentences: Sentence[] = [
     pronunciation: 'an-njŏng-hi ga-se-jo',
     finnish: 'Hei hei.',
     image: 'images/topic-01-sentence-02.webp',
-    imageAlt: 'Nainen vilkuttaa hyvästiksi pois lähtevälle miehelle.',
+    imageAlt: 'Mies vilkuttaa hyvästiksi naiselle, jolla on matkalaukku.',
     audio: 'audio/topic-01-sentence-02.mp3',
   },
   {
@@ -54,7 +54,8 @@ export const sentences: Sentence[] = [
     pronunciation: 'mi-an-he-jo',
     finnish: 'Anteeksi.',
     image: 'images/topic-01-sentence-05.webp',
-    imageAlt: 'Nainen pyytää anteeksi kaadettuaan juomaa vahingossa.',
+    imageAlt:
+      'Mies kumartaa päätään naisen edessä. Pöydällä on kaatunut kuppi ja läikkynyttä juomaa.',
     audio: 'audio/topic-01-sentence-05.mp3',
   },
   {
@@ -65,7 +66,8 @@ export const sentences: Sentence[] = [
     pronunciation: 'djŏ-nŭn hak-sseng-i-e-jo',
     finnish: 'Olen opiskelija.',
     image: 'images/topic-02-sentence-01.webp',
-    imageAlt: 'Opiskelija seisoo koulun edessä kirjat sylissään.',
+    imageAlt:
+      'Opiskelija seisoo sisätiloissa, pitää kirjaa ja osoittaa itseään.',
     audio: 'audio/topic-02-sentence-01.mp3',
   },
   {
@@ -244,7 +246,7 @@ export const sentences: Sentence[] = [
     pronunciation: 'i-gŏ ŏl-ma-je-jo',
     finnish: 'Paljonko tämä maksaa?',
     image: 'images/topic-05-sentence-02.webp',
-    imageAlt: 'Asiakas pitää tuotetta ja kysyy sen hintaa myyjältä.',
+    imageAlt: 'Asiakas osoittaa tiskillä olevaa kuppia ja katsoo myyjää.',
     audio: 'audio/topic-05-sentence-02.mp3',
   },
   {
@@ -560,7 +562,7 @@ export const sentences: Sentence[] = [
     finnish: 'En puhu koreaa kovin hyvin.',
     image: 'images/topic-10-sentence-05.webp',
     imageAlt:
-      'Nainen näyttää epävarmalta pitäessään Korea-aiheista opiskeluvihkoa.',
+      'Nainen hymyilee ja pitää Korean lipulla varustettua vihkoa keskustellessaan miehen kanssa.',
     audio: 'audio/topic-10-sentence-05.mp3',
   },
 ]
